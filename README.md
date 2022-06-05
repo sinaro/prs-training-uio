@@ -1,5 +1,6 @@
 ## Training for construction of polygenic risk score using PRSice2
-The 
+The tutorial uses publicly available datasets from [1000 Genomes phase 3 release](https://www.internationalgenome.org/data-portal/data-collection/phase-3).
+
 
 
 
