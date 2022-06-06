@@ -145,36 +145,29 @@ Rscript PRSice.R \
         --snp ID \
         --a1 REF \
         --a2 ALT \
+        --beta \
         --stat BETA \
         --pvalue PVAL \
-
-
-        --a1 REF \
-        --a2 ALT \
+        --target ~/prstrain/1000G/1000G_phase3_common_norel.nodup \
+        --extract ~/prstrain/1000G/1000G_phase3_common_norel.nodup.clumped.clumped \
+        --keep ~/prstrain/1000G/eurfamily3 \
+        --cov ~/prstrain/1000G/eurfamily.cov \
+        --ignore-fid \
         --bar-levels 1e-08,1e-05,0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \
-        --base ~/prstrain/base/AN_basegwas.QC.gz \
-        --beta \
-        --binary-target T \
-        --no-regress \
         --interval 5e-05 \
         --lower 5e-08 \
-        --num-auto 22 \
-        --out AN_100GEUR \
-        --pvalue PVAL \
-        --seed 4059203949 \
-        --snp ID \
-        --stat BETA \
-        --target /home/sina/PS/workshop/1000G/1000G_phase3_common_norel.nodup \
-        --keep /home/sina/PS/workshop/1000G/eurfamily3 \
-        --cov /home/sina/PS/workshop/1000G/eurfamily.cov \
-        --ignore-fid \
-        --thread 1 \
         --upper 0.5 \
-        --device pdf \
-        --quantile 20 \
-        --print-snp \
+        --num-auto 22 \
         --fastscore \
-        --extract /home/sina/PS/workshop/1000G/1000G_phase3_common_norel.nodup.clumped.clumped \
-        --no-clump
+        --no-clump \
+        --binary-target T \
+        --no-regress \
+        --seed 4059203949 \
+        --out AN_100GEUR \
+        --thread 1 \
+        --device pdf \
+        --quantile 10 \
+        --print-snp \
+
 ```
 
