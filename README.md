@@ -130,7 +130,7 @@ module load plink/1.90b6.2
         --out 1000G_phase3_common_norel.nodup.clumped
 
 # It reports 177330 clumps formed frin 1259600 top variants, and results written to .clumped file.
-
+```
 ## Running PRSice2 to construct PRS
 
 ```bash
