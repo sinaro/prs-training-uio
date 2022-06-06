@@ -93,7 +93,7 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
 ```bash
 # You are recommended to write a bash script. For users running on HPC clusters, it is recommened to use a job scheduler (eg. Slurm).
 
-```
+```bash
 # Example bash script to run on a personal device:
 #!/bin/bash
 
