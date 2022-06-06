@@ -90,6 +90,7 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
 ./plink --bfile 1000G_phase3_common_norel --exclude 1.dups --make-bed --out 1000G_phase3_common_norel.nodup
 ```
 * Clumping of SNPs
+
 ```bash
 # You are recommended to write a bash script. For users running on HPC clusters, it is recommened to use a job scheduler (eg. Slurm).
 # Example bash script to run on a personal device:
@@ -104,7 +105,8 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
         --clump-snp-field ID \
         --clump-field PVAL \
         --out 1000G_phase3_common_norel.nodup.clumped
-```        
+```
+
 ```bash
 # Example Slurm script to run on an HPC cluster:
 #!/bin/bash
