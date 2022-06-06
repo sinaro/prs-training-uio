@@ -133,6 +133,49 @@ module load plink/1.90b6.2
 
 # It reports 177330 clumps formed frin 1259600 top variants, and results written to .clumped file.
 
-```
+## Running PRSice2 to construct PRS
+
+```bash
+
+# Example bash script to run on a personal device:
+#!/bin/bash
+
+Rscript PRSice.R \
+        --prsice PRSice_linux \
+        --base ~/prstrain/base/AN_basegwas.QC.gz \
+        --snp ID \
+        --a1 REF \
+        --a2 ALT \
+        --stat BETA \
+        --pvalue PVAL \
+
+
+        --a1 REF \
+        --a2 ALT \
+        --bar-levels 1e-08,1e-05,0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \
+        --base ~/prstrain/base/AN_basegwas.QC.gz \
+        --beta \
+        --binary-target T \
+        --no-regress \
+        --interval 5e-05 \
+        --lower 5e-08 \
+        --num-auto 22 \
+        --out AN_100GEUR \
+        --pvalue PVAL \
+        --seed 4059203949 \
+        --snp ID \
+        --stat BETA \
+        --target /home/sina/PS/workshop/1000G/1000G_phase3_common_norel.nodup \
+        --keep /home/sina/PS/workshop/1000G/eurfamily3 \
+        --cov /home/sina/PS/workshop/1000G/eurfamily.cov \
+        --ignore-fid \
+        --thread 1 \
+        --upper 0.5 \
+        --device pdf \
+        --quantile 20 \
+        --print-snp \
+        --fastscore \
+        --extract /home/sina/PS/workshop/1000G/1000G_phase3_common_norel.nodup.clumped.clumped \
+        --no-clump
 
 
