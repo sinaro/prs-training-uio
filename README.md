@@ -58,11 +58,22 @@ tar -czvf AN_basegwas.txt.gz  AN_basegwas.txt
 # Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAD) information to check, but the Readme file states MAF > 0.01 
 gunzip -c AN_basegwas.txt.gz |\
 awk 'NR==1 || ($10 > 0.8) {print}' |\
-gzip > AN.gz
+gzip > AN_basegwas.gz
 # No SNP dropped due to low imputation quality (8219103 SNPs).
-
-
-
+# Check for duplicate SNPs
+gunzip -c AN_basegwas.gz |\
+awk '{seen[$3]++; if(seen[$3]==1){ print}}' |\
+gzip - > AN_basegwas.nodup.gz
+# After the duplicate SNPs are dropped, we now have 8125798 SNPs.
+# Removing ambigeous SNPs
+gunzip -c AN_basegwas.nodup.gz |\
+awk '!( ($4=="A" && $5=="T") || \
+        ($4=="T" && $5=="A") || \
+        ($4=="G" && $5=="C") || \
+        ($4=="C" && $5=="G")) {print}' |\
+    gzip > AN_basegwas.QC.gz
+# After the ambigeous SNPs are dropped, we now have 7002697 SNPs.
+    
 ```
 
 
