@@ -36,7 +36,7 @@ unzip 1000G_phase3_common_norel.zip
 ## Find and download GWAS summary results for Anorexia Nervosa (AN)
 Get yourself familarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in PubMed for major GWAS in European populations for AN. Try to find the latest, and largest (highest sample size) GWAS for AN. Find if the GWAS summary results are publicly available and where you can download it.
 <details>
-<summary>Click to expand</summary>
+<summary>Find the answer here</summary>
 
 The largest GWAS for AN in European populatiosn as of June 2022 was published by [Watson et al](https://pubmed.ncbi.nlm.nih.gov/31308545/). Their summary results could be downloaded from the [PGS website](https://www.med.unc.edu/pgc/download-results/).
 
