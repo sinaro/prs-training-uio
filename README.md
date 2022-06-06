@@ -81,7 +81,7 @@ unzip 1000G_phase3_common_norel.zip
 ## QC of genetics data and SNP clumping using PLINK
 The genetics dataset should not contain any duplicate SNP. Othwerwise, construction of PRS might run into trouble.
 We are performing clumping of SNPs using PLINK. Although PRSice2 package is also able to perform clumping, we saw it was not optimized for our dataset.
-Removing duplicated SNP from genetics data
+* Removing duplicated SNP from genetics data
 ```bash
 # See which SNP(s) is a duplicate in the .bim file
 cd  ~/prstrain/1000G
@@ -94,7 +94,7 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
 # You are recommended to write a bash script. For users running on HPC clusters, it is recommened to use a job scheduler (eg. Slurm).
 
 ```
-Example bash script to run on a personal device:
+# Example bash script to run on a personal device:
 #!/bin/bash
 
 ./plink \
@@ -107,9 +107,28 @@ Example bash script to run on a personal device:
         --clump-field PVAL \
         --out 1000G_phase3_common_norel.nodup.clumped
         
-Example Slurm script to run on an HPC cluster:
+# Example Slurm script to run on an HPC cluster:
+#!/bin/bash
+#SBATCH --jobname=plink_prstrain_20220925
+#SBATCH --account=[to be assigned]
+#SBATCH --partition=[accel]
+#SBATCH --time=00:15:00
+#SBATCH --mem-per-cpu=12G
+#SBATCH --cpus-per-task=6
 
+# Set up job environment
+module purge
+module load plink/1.90b6.2
 
+./plink \
+        --bfile 1000G_phase3_common_norel.nodup \
+        --clump ~/prstrain/base/AN_basegwas.QC.gz \
+        --clump-p1 1.0 \
+        --clump-kb 250 \
+        --clump-r2 0.1 \
+        --clump-snp-field ID \
+        --clump-field PVAL \
+        --out 1000G_phase3_common_norel.nodup.clumped
 
 ```
 
