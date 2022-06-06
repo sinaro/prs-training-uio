@@ -6,8 +6,9 @@ This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-ris
 
 The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phaase 3 release. The outcome (phenotype) data (AN) is simulated.
 
-## Installation of packages
+## Downloading packages
 The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended.
+Downloading packages
 ```bash
 # Make a directory and download the packages 
 mkdir ~/prstrain
@@ -21,26 +22,13 @@ wget https://s3.amazonaws.com/plink1-assets/plink_mac_20220402.zip
 ./PRSice_linux --help
 ```
 
-## Download genetic dataset
-We ues publicly available datasets from [1000 Genomes phase 3 release](https://www.internationalgenome.org/data-portal/data-collection/phase-3).<br/>
-We use mostly unrelated individuals, and use SNPs in common with HapMap3 and UK Biobank. This dataset is provided by Florian Privé and is available [online](https://figshare.com/articles/dataset/1000_genomes_phase_3_files_with_SNPs_in_common_with_HapMap3/9208979).
-```bash
-# Make a directory for 1000 genome data and download the genetics files 
-mkdir ~/prstrain/1000G
-cd ~/prstrain/1000G
-wget https://figshare.com/ndownloader/articles/9208979/versions/4
-unzip 1000G_phase3_common_norel.zip
-# You should have binary PLINK files
-```
-* Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable.
-
-## Find and download GWAS summary results for Anorexia Nervosa (AN) and do initial QC
+## Find and download GWAS summary results for Anorexia Nervosa (AN) and perform QC of base data
 Get yourself familarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in PubMed for major GWAS in European populations for AN. Try to find the latest, and largest (highest sample size) GWAS for AN. Find if the GWAS summary results are publicly available and where you can download it.
 <details>
 <summary>Find the answer here</summary>
 The largest GWAS for AN in European populatiosn as of June 2022 was published by [Watson et al](https://pubmed.ncbi.nlm.nih.gov/31308545/). Their summary results could be downloaded from the [PGS website](https://www.med.unc.edu/pgc/download-results/).
 </details>
-
+* QC of base GWAS summary data
 ```bash
 # Make a directory for GWAS summary results, also known as "base" data, and download the result
 mkdir ~/prstrain/base
@@ -73,9 +61,36 @@ awk '!( ($4=="A" && $5=="T") || \
         ($4=="C" && $5=="G")) {print}' |\
     gzip > AN_basegwas.QC.gz
 # After the ambigeous SNPs are dropped, we now have 7002697 SNPs.
-    
 ```
 
+## Download genetics dataset
+We ues publicly available datasets from [1000 Genomes phase 3 release](https://www.internationalgenome.org/data-portal/data-collection/phase-3).<br/>
+We use mostly unrelated individuals, and use SNPs in common with HapMap3 and UK Biobank. This dataset is provided by Florian Privé and is available [online](https://figshare.com/articles/dataset/1000_genomes_phase_3_files_with_SNPs_in_common_with_HapMap3/9208979).
+* Downloading genetics dataset
+```bash
+# Make a directory for 1000 genome data and download the genetics files 
+mkdir ~/prstrain/1000G
+cd ~/prstrain/1000G
+!wget --content-disposition https://figshare.com/ndownloader/files/17838962
+unzip 1000G_phase3_common_norel.zip
+# You should have binary PLINK files
+```
+* Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable.
+
+## QC of genetics data and SNP clumping using PLINK
+The genetics dataset should not contain any duplicate SNP. Othwerwise, construction of PRS might run into trouble.
+We are performing clumping of SNPs using PLINK. Although PRSice2 package is also able to perform clumping, we saw it was not optimized for our dataset.
+Removing duplicated SNP from genetics data
+```bash
+# See which SNP(s) is a duplicate in the .bim file
+cd  ~/prstrain/1000G
+cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
+# You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK.
+./plink --bfile 1000G_phase3_common_norel --exclude 1.dups --make-bed --out 1000G_phase3_common_norel.nodup
+```
+* Clumping of SNPs
+```bash
+# You are recommended to write a bash script. For users running on HPC clusters, it is recommened to use a job scheduler (eg. Slurm).
 
 
 
