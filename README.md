@@ -175,5 +175,5 @@ Rscript PRSice.R \
         --fastscore \
         --extract /home/sina/PS/workshop/1000G/1000G_phase3_common_norel.nodup.clumped.clumped \
         --no-clump
-
+```
 
