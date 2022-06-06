@@ -105,7 +105,8 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
         --clump-snp-field ID \
         --clump-field PVAL \
         --out 1000G_phase3_common_norel.nodup.clumped
-        
+```        
+```bash
 # Example Slurm script to run on an HPC cluster:
 #!/bin/bash
 #SBATCH --jobname=plink_prstrain_20220925
