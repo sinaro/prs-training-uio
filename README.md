@@ -45,6 +45,7 @@ unzip 14671980.zip
 ##===R code to read in the TSV version of the VCF
 ##library(data.table)
 ##AN_basegwas.txt <-fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
+##write.table(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
 # Compress back the file 
 tar -czvf AN_basegwas.txt.gz  AN_basegwas.txt
 # Do some QC of base data as descibed in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
