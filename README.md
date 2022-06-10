@@ -32,6 +32,7 @@ Get yourself familarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and se
 <summary>Find the answer here</summary>
 The largest GWAS for AN in European populatiosn as of June 2022 was published by [Watson et al](https://pubmed.ncbi.nlm.nih.gov/31308545/). Their summary results could be downloaded from the [PGS website](https://www.med.unc.edu/pgc/download-results/).
 </details>
+
 * QC of base GWAS summary data
 ```bash
 # Make a directory for GWAS summary results, also known as "base" data, and download the result
