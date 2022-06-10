@@ -66,6 +66,7 @@ awk '!( ($4=="A" && $5=="T") || \
         ($4=="C" && $5=="G")) {print}' |\
     gzip > AN_basegwas.QC.gz
 # After the ambigeous SNPs are dropped, we now have 7002697 SNPs.
+# To do: upload this file.
 ```
 
 ## Download genetics dataset
@@ -84,7 +85,21 @@ unzip 1000G_phase3_common_norel.zip
 Have a look at .fam2 file in the repository. Take a look at the populations. Not all of the are European populations. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
 * Get a list of IDs for particpants of European ancestry in the dataset.
 ```{r}
-# Here we provide it for R.
+# Here we provide it using R.
+family.fam <- read.delim("~/prstrain/1000G/population/1000G_phase3_common_norel.fam2")
+library(dplyr)
+eurfamily.fam <- filter(family.fam, Super.Population == "EUR") #503 samples
+eurfamily.fam <- select(eurfamily.fam, -c("Population", "Population.Description", "Super.Population"))
+eurfamily.fam <- eurfamily.fam %>% rename(IID = sample.ID)
+eurfamily.fam <- eurfamily.fam %>% mutate(FID = IID)
+eurfamily.fam <- select(eurfamily.fam, FID, IID, sex)
+# save the covariate file (will be useful when we want to consider the effect of covariate (sex) in PRS.R2. Keep header of the file.
+write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
+# alternatively you can download it from the Github of this tutorial.
+# save the list of IDs of participants of European ancestry. Make sure there is no colname as it conflicts with PRSice2.
+eurfamily.fam <- select(eurfamily.fam, IID)
+write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
+# alternatively you can download it from the Github of this tutorial.
 
 ```
 
@@ -149,6 +164,7 @@ module load plink/1.90b6.2
 ```bash
 # Example bash script to run on a personal device:
 # To check which commands are available in PRSice2 and their description, check: http://www.prsice.info/command_detail/
+# We use --fastscore to only calculate threshold stated in --bar-levels. This is to enhance the speed in this training. Otherwise, if --fast-score is not used, it creates PRS for a range stated from --lower, to --upper, with the specified --interval.
 
 #!/bin/bash
 Rscript PRSice.R \
@@ -162,7 +178,7 @@ Rscript PRSice.R \
         --pvalue PVAL \
         --target ~/prstrain/1000G/1000G_phase3_common_norel.nodup \
         --extract ~/prstrain/1000G/1000G_phase3_common_norel.nodup.clumped.clumped \
-        --keep ~/prstrain/1000G/eurfamily3 \
+        --keep ~/prstrain/1000G/eurfamily \
         --cov ~/prstrain/1000G/eurfamily.cov \
         --ignore-fid \
         --bar-levels 1e-08,1e-05,0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \
@@ -179,7 +195,7 @@ Rscript PRSice.R \
         --thread 1 \
         --device pdf \
         --quantile 10 \
-        --print-snp \
+        --print-snp
 
 ```
 
