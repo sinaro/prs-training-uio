@@ -4,7 +4,7 @@ In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk s
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
 
-To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/). The author has provided a dataset and tutorial to [practice constructing PRS using PRSice2](https://choishingwan.github.io/PRS-Tutorial/).  
+To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/). The author has provided a dataset and tutorial to [practice constructing PRS using PRSice2](https://choishingwan.github.io/PRS-Tutorial/).
 
 The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phaase 3 release. The outcome (phenotype) data (AN) is simulated.
 
@@ -78,9 +78,16 @@ mkdir ~/prstrain/1000G
 cd ~/prstrain/1000G
 !wget --content-disposition https://figshare.com/ndownloader/files/17838962
 unzip 1000G_phase3_common_norel.zip
-# You should have binary PLINK files
+# You should now have binary PLINK files
 ```
-* Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable.
+* Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable. Note the number of individuals in the .fam file is 2490.
+Have a look at .fam2 file in the repository. Take a look at the populations. Not all of the are European populations. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
+* Get a list of IDs for particpants of European ancestry in the dataset.
+```{r}
+# Here we provide it for R.
+
+```
+
 
 ## QC of genetics data and SNP clumping using PLINK
 The genetics dataset should not contain any duplicate SNP. Othwerwise, construction of PRS might run into trouble.
@@ -90,7 +97,7 @@ We are performing clumping of SNPs using PLINK. Although PRSice2 package is also
 # See which SNP(s) is a duplicate in the .bim file
 cd  ~/prstrain/1000G
 cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
-# You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK.
+# You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK. Use "out" to create new PLINK binary files.
 ./plink --bfile 1000G_phase3_common_norel --exclude 1.dups --make-bed --out 1000G_phase3_common_norel.nodup
 ```
 * Clumping of SNPs
@@ -108,6 +115,7 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
         --clump-snp-field ID \
         --clump-field PVAL \
         --out 1000G_phase3_common_norel.nodup.clumped
+# It reports 177330 clumps formed frin 1259600 top variants, and results written to .clumped file
 ```
 
 ```bash
@@ -139,10 +147,10 @@ module load plink/1.90b6.2
 ## Running PRSice2 to construct PRS
 
 ```bash
-
 # Example bash script to run on a personal device:
-#!/bin/bash
+# To check which commands are available in PRSice2 and their description, check: http://www.prsice.info/command_detail/
 
+#!/bin/bash
 Rscript PRSice.R \
         --prsice PRSice_linux \
         --base ~/prstrain/base/AN_basegwas.QC.gz \
