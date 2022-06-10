@@ -1,21 +1,25 @@
 # Training for construction of polygenic risk score using PRSice2
 This tutorial is in development and is not yet finalized. <br/>
-In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research” . Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
+In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
+
+To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/). The author has provided a dataset and tutorial to [practice constructing PRS using PRSice2](https://choishingwan.github.io/PRS-Tutorial/).  
 
 The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phaase 3 release. The outcome (phenotype) data (AN) is simulated.
 
 ## Downloading packages
-The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended.
-Downloading packages
+The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
+This training was tested on Ubuntu 20.04.4 LTS, and Red Hat Enterprise Linux Server release 7.9 (Maipo). To be confirmed on a Mac OS.
+
+Downloading packages:
 ```bash
 # Make a directory and download the packages 
 mkdir ~/prstrain
 cd prstrain
 wget https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip
 unzip PRSice_linux.zip
-wget https://s3.amazonaws.com/plink1-assets/plink_mac_20220402.zip
+wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20220402.zip
 # test the binary files for executability
 # use chmod for correctly setting the executability if required.
 ./plink --help
@@ -28,7 +32,7 @@ Get yourself familarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and se
 <summary>Find the answer here</summary>
 The largest GWAS for AN in European populatiosn as of June 2022 was published by [Watson et al](https://pubmed.ncbi.nlm.nih.gov/31308545/). Their summary results could be downloaded from the [PGS website](https://www.med.unc.edu/pgc/download-results/).
 </details>
-
+<br/>
 * QC of base GWAS summary data
 ```bash
 # Make a directory for GWAS summary results, also known as "base" data, and download the result
