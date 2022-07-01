@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2
-Last update: 26.06.2022. This tutorial is in development and is not yet finalized. <br/>
+Last update: 01.07.2022. This tutorial is in development and is not yet finalized. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -10,7 +10,7 @@ The outcome of interest in this training is Anorexia Nervosa (AN) and we use gen
 
 ## Downloading packages
 The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
-This training was tested on Ubuntu 20.04.4 LTS, Red Hat Enterprise Linux Server release 7.9 (Maipo), and Mac OS (add version).
+This training was tested on Ubuntu 20.04.4 LTS, Red Hat Enterprise Linux Server release 7.9 (Maipo), and Mac OS (Catalina, version 10.15.7).
 
 Downloading packages:
 ```bash
@@ -84,7 +84,10 @@ We use mostly unrelated individuals, and use SNPs in common with HapMap3 and UK 
 mkdir ~/prstrain/1000G
 cd ~/prstrain/1000G
 !wget --content-disposition https://figshare.com/ndownloader/files/17838962
-unzip 1000G_phase3_common_norel.zip
+# on Mac OS, you can try:
+# curl -O http://figshare.com/ndownloader/files/17838962 --location-trusted
+# Unzip the file:
+unzip 1000G_phase3_common_norel.zip 
 # You should now have binary PLINK files
 ```
 * Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable. Note the number of individuals in the .fam file is 2490.
