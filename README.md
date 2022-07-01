@@ -6,7 +6,7 @@ This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-ris
 
 To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/). The author has provided a dataset and tutorial to [practice constructing PRS using PRSice2](https://choishingwan.github.io/PRS-Tutorial/).
 
-The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phaase 3 release. The outcome (phenotype) data (AN) is simulated.
+The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
 
 ## Downloading packages
 The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
