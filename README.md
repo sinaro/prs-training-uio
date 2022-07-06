@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2
-Last update: 01.07.2022. This tutorial is in development and is not yet finalized. <br/>
+Last update: 06.07.2022. This tutorial is in development and is not yet finalized. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -7,6 +7,9 @@ This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-ris
 To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/). The author has provided a dataset and tutorial to [practice constructing PRS using PRSice2](https://choishingwan.github.io/PRS-Tutorial/).
 
 The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
+
+## Source materials for practicals
+Source materials for this tutorial can be found in the [Github repository](https://github.com/sinaro/prs-training-uio)
 
 ## Downloading packages
 The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
