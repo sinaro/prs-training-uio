@@ -104,16 +104,16 @@ library(dplyr)
 eurfamily.fam <- filter(family.fam, Super.Population == "EUR") #503 samples of the total 2490 are European
 # Drop columns we no longer need
 eurfamily.fam <- select(eurfamily.fam, -c("Population", "Population.Description", "Super.Population"))
-
-eurfamily.fam <- eurfamily.fam %>% rename(IID = sample.ID)
+# Some steps to make it look like a .fam file format
+eurfamily.fam <- eurfamily.fam %>% dplyr::rename(IID = sample.ID)
 eurfamily.fam <- eurfamily.fam %>% mutate(FID = IID)
 eurfamily.fam <- select(eurfamily.fam, FID, IID, sex)
 # save the covariate file (will be useful when we want to consider the effect of covariate (sex) in PRS.R2. Keep header of the file.
-write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
+utils::write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 # alternatively you can download it from the Github of this tutorial.
 # save the list of IDs of participants of European ancestry. Make sure there is no colname as it conflicts with PRSice2.
 eurfamily.fam <- select(eurfamily.fam, IID)
-write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
+utils::write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
 # alternatively you can download it from the Github of this tutorial.
 ```
 
