@@ -75,7 +75,6 @@ awk '!( ($4=="A" && $5=="T") || \
         ($4=="C" && $5=="G")) {print}' |\
     gzip > AN_basegwas.QC.gz
 # After the ambigeous SNPs are dropped, we now have 7002697 SNPs.
-# To do: upload this file.
 ```
 
 ## Download genetics dataset
@@ -94,14 +93,18 @@ unzip 1000G_phase3_common_norel.zip
 # You should now have binary PLINK files
 ```
 * Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable. Note the number of individuals in the .fam file is 2490.
-Have a look at .fam2 file in the repository. Take a look at the populations. Not all of the are European populations. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
+Have a look at .fam2 file in the repository. Take a look at the populations. Not all of them are European populations. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
 * Get a list of IDs for particpants of European ancestry in the dataset.
 ```bash
 # Here we provide it using R.
 family.fam <- read.delim("~/prstrain/1000G/population/1000G_phase3_common_norel.fam2")
+# We use R dplyr package to manipulate the dataset easier
 library(dplyr)
-eurfamily.fam <- filter(family.fam, Super.Population == "EUR") #503 samples
+# Restric it to European samples only
+eurfamily.fam <- filter(family.fam, Super.Population == "EUR") #503 samples of the total 2490 are European
+# Drop columns we no longer need
 eurfamily.fam <- select(eurfamily.fam, -c("Population", "Population.Description", "Super.Population"))
+
 eurfamily.fam <- eurfamily.fam %>% rename(IID = sample.ID)
 eurfamily.fam <- eurfamily.fam %>% mutate(FID = IID)
 eurfamily.fam <- select(eurfamily.fam, FID, IID, sex)
