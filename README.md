@@ -133,7 +133,7 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
 You are recommended to write a bash script. For users running on HPC clusters, it is recommened to use a job scheduler (eg. Slurm).
 
 ```bash
-# Example bash script to run on a personal device:
+# Example bash script to run on a personal device (create a file with Nano/vim text editor called "clump.sh" and execute it with ./clump.sh):
 #!/bin/bash
 ./plink \
         --bfile 1000G_phase3_common_norel.nodup \
@@ -144,7 +144,7 @@ You are recommended to write a bash script. For users running on HPC clusters, i
         --clump-snp-field ID \
         --clump-field PVAL \
         --out 1000G_phase3_common_norel.nodup.clumped
-# It reports 177330 clumps formed frin 1259600 top variants, and results written to .clumped file
+# It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file
 ```
 
 ```bash
@@ -171,12 +171,12 @@ module load plink/1.90b6.2
         --clump-field PVAL \
         --out 1000G_phase3_common_norel.nodup.clumped
 
-# It reports 177330 clumps formed frin 1259600 top variants, and results written to .clumped file.
+# It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file.
 ```
 ## Running PRSice2 to construct PRS
 
 ```bash
-# Example bash script to run on a personal device:
+# Example bash script to run on a personal device (create a file called "prsiceR_AN.sh" with the conent indicated below and execute it in bash):
 # To check which commands are available in PRSice2 and their description, check: http://www.prsice.info/command_detail/
 # We use --fastscore to only calculate threshold stated in --bar-levels. This is to enhance the speed in this training. Otherwise, if --fast-score is not used, it creates PRS for a range stated from --lower, to --upper, with the specified --interval.
 
