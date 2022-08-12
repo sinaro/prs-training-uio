@@ -129,7 +129,7 @@ cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
 # You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK. Use "out" to create new PLINK binary files.
 ./plink --bfile 1000G_phase3_common_norel --exclude 1.dups --make-bed --out 1000G_phase3_common_norel.nodup
 ```
-* Clumping of SNPs
+* Clumping of SNPs <br/>
 You are recommended to write a bash script. For users running on HPC clusters, it is recommened to use a job scheduler (eg. Slurm).
 
 ```bash
