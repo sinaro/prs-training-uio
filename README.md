@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2
-Last update: 06.07.2022. This tutorial is in development and is not yet finalized. <br/>
+Last update: 02.09.2022. This tutorial is in development and is not yet finalized. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -46,7 +46,7 @@ The largest GWAS for AN in European populatiosn as of June 2022 was published by
 # Make a directory for GWAS summary results, also known as "base" data, and download the result
 mkdir ~/prstrain/base
 cd ~/prstrain/base
-wget https://figshare.com/ndownloader/articles/14671980/versions/1
+!wget --content-disposition https://figshare.com/articles/dataset/an2019/14671980
 unzip 14671980.zip
 # The .vcf file has a header. In Readme file of the donwloaded dataset, it has given an R code to remove the header.
 # Remove the header of .vcf file and save it
