@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2
-Last update: 02.09.2022. This tutorial is in development and is not yet finalized. <br/>
+Last update: 04.09.2022. This tutorial is in development and is not yet finalized. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -59,6 +59,11 @@ md5sum pgcAN2.2019-07.vcf.tsv.gz
 # Compress back the file 
 tar -czvf AN_basegwas.txt.gz  AN_basegwas.txt
 ### Do some QC of base data as descibed in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
+## general QC information mentioned in Readme that is of interest.
+# genotyping rate > 0.99 (herre a call rate >= 98%)
+# sample missingness < 0.02 (ok)
+# Hardy-Weinberg quilibrium (HWE) (p > 1 * 10-6)
+## common QC steps for base file.
 # Check Imputation quality and MAF. 
 # Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
 gunzip -c AN_basegwas.txt.gz |\
@@ -78,15 +83,16 @@ awk '!( ($4=="A" && $5=="T") || \
         ($4=="C" && $5=="G")) {print}' |\
     gzip > AN_basegwas.QC.gz
 # After the ambigeous SNPs are dropped, we now have 7002697 SNPs.
+# Mismatching SNPs: this is taken care of by the program. The program also reports this in a file.
 # Check the presence of effect and non-effect allele. Here we have REF and ALT allele. If this was not directly mentioned, this should be asked from the GWA authors. Otherwise, the association will be in the opposite direction.
-# Other QC information mentioned in Readme that is of interest.
-# genotyping rate > 0.99 (herre a call rate >= 98%)
-# sample missingness < 0.02 (ok)
-# Hardy-Weinberg quilibrium (HWE) (p > 1 * 10-6)
+# SNPs on sex chromosome. There are models that can use such information but we are working with automal SNPs.
+less AN_basegwas.txt | awk '{print $1}' | sort -n | uniq -c
+# Here you see you only have SNPs on autosomal chromosomes (ch 1-22).
+
 
 ```
 
-## Download genetics dataset
+## Download 1000 Genomes genetics dataset and prepare it for analysis
 We ues publicly available datasets from [1000 Genomes phase 3 release](https://www.internationalgenome.org/data-portal/data-collection/phase-3).<br/>
 We use mostly unrelated individuals, and use SNPs in common with HapMap3 and UK Biobank. This dataset is provided by Florian Privé and is available [online](https://figshare.com/articles/dataset/1000_genomes_phase_3_files_with_SNPs_in_common_with_HapMap3/9208979).
 * Downloading genetics dataset
@@ -109,17 +115,16 @@ Have a look at .fam2 file in the repository. Take a look at the populations. Not
 family.fam <- read.delim("~/prstrain/1000G/population/1000G_phase3_common_norel.fam2")
 # We use R dplyr package to manipulate the dataset easier
 library(dplyr)
-# Restric it to European samples only
+# Restrict it to European samples only
 eurfamily.fam <- filter(family.fam, Super.Population == "EUR") #503 samples of the total 2490 are European
-# Drop columns we no longer need
-eurfamily.fam <- select(eurfamily.fam, -c("Population", "Population.Description", "Super.Population"))
-# Some steps to make it look like a .fam file format
-eurfamily.fam <- eurfamily.fam %>% dplyr::rename(IID = sample.ID)
-eurfamily.fam <- eurfamily.fam %>% mutate(FID = IID)
-eurfamily.fam <- select(eurfamily.fam, FID, IID, sex)
-# save the covariate file (will be useful when we want to consider the effect of covariate (sex) in PRS.R2. Keep header of the file.
+# Drop columns we no longer need, and some steps to make it look like a .fam file format
+eurfamily.fam <- eurfamily.fam %>% 
+                  select(-c("Population", "Population.Description", "Super.Population")) %>% 
+                  rename(IID=sample.ID) %>% 
+                  mutate(FID = IID) %>% 
+                  select(FID, IID, sex)
+# save the covariate file (this can be useful when we want to consider the effect of covariate (sex) in PRS.R2 after combining the file with PCs. Keep header of the file).
 utils::write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
-# alternatively you can download it from the Github of this tutorial.
 # save the list of IDs of participants of European ancestry. Make sure there is no colname as it conflicts with PRSice2.
 eurfamily.fam <- select(eurfamily.fam, IID)
 utils::write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
