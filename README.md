@@ -36,11 +36,11 @@ wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20220402.zip
 ./plink --help
 ./PRSice_linux --help
 ## On an HPC environment (eg. TSD Linux)
-you need to be on the compute node (not the login node) [on TSD, "ssh -Y p****-submit"]
-you can search for available modules [module spider plink]
-if available, you can load the module and use it [module load plink/1.90b6.2]
-however, we do not have PRsice2 available as a module. The installation can be "ordered" to the helpdesk, or the binary file can be transferred and directly used.
-This requires tsd-api-client to be installed and registered on an online environemnt, to upload the file to the tsd project (please get in touch if you need assistance with this).
+# you need to be on the compute node (not the login node) [on TSD, "ssh -Y p****-submit"]
+# you can search for available modules [module spider plink]
+# if available, you can load the module and use it [module load plink/1.90b6.2]
+# however, we do not have PRsice2 available as a module. The installation can be "ordered" to the helpdesk, or the binary file can be transferred and directly used.
+# This requires tsd-api-client to be installed and registered on an online environemnt, to upload the file to the tsd project (please get in touch if you need assistance with this).
 
 ```
 
