@@ -48,6 +48,8 @@ mkdir ~/prstrain/base
 cd ~/prstrain/base
 !wget --content-disposition https://figshare.com/articles/dataset/an2019/14671980
 unzip 14671980.zip
+# Compare MD5 checksum between the downloaded file and the one mentioned. They should report the same string.
+md5sum pgcAN2.2019-07.vcf.tsv.gz
 # The .vcf file has a header. In Readme file of the donwloaded dataset, it has given an R code to remove the header.
 # Remove the header of .vcf file and save it
 ##===R code to read in the TSV version of the VCF
