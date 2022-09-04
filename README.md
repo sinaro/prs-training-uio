@@ -14,24 +14,34 @@ Source materials for this tutorial can be found in the [Github repository](https
 ## Downloading packages
 The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
 This training was tested on Ubuntu 20.04.4 LTS, Red Hat Enterprise Linux Server release 7.9 (Maipo), and Mac OS (Catalina, version 10.15.7).
+The tutorial assumes that you have root/admin privileges on your device. On an HPC system, this is also possible but it might differ in some steps.
 
 Downloading packages:
 ```bash
 # Make a directory and download the packages 
 mkdir ~/prstrain
 cd prstrain
+## Download PRSice2
 wget https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip
-# Note "wget" might not be available on Mac. You might want to test "curl" instead. Check their availibity by "which wget" and "which curl".
+# Note "wget" might not be available by default on Mac. You might want to test "curl" instead. Check their availibity by "which wget" and "which curl".
 # If "curl" is available. You can try downloading the link by:
 # curl -o ./prs "https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip"
 # If this solution did not work as well, you need to directly download it and then transfer it to your work directory.
 # You might need to go to security on Mac and choose "allow it anyway".
 unzip PRSice_linux.zip
+## Download PLINK
 wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20220402.zip
 # test the binary files for executability
 # use chmod for correctly setting the executability if required.
 ./plink --help
 ./PRSice_linux --help
+## On an HPC environment (eg. TSD Linux)
+you need to be on the compute node (not the login node) [on TSD, "ssh -Y p****-submit"]
+you can search for available modules [module spider plink]
+if available, you can load the module and use it [module load plink/1.90b6.2]
+however, we do not have PRsice2 available as a module. The installation can be "ordered" to the helpdesk, or the binary file can be transferred and directly used.
+This requires tsd-api-client to be installed and registered on an online environemnt, to upload the file to the tsd project (please get in touch if you need assistance with this).
+
 ```
 
 ## Find and download GWAS summary results for Anorexia Nervosa (AN) and perform QC of base data
