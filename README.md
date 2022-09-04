@@ -58,8 +58,9 @@ md5sum pgcAN2.2019-07.vcf.tsv.gz
 ##write.table(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
 # Compress back the file 
 tar -czvf AN_basegwas.txt.gz  AN_basegwas.txt
-# Do some QC of base data as descibed in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
-# Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAD) information to check, but the Readme file states MAF > 0.01 
+### Do some QC of base data as descibed in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
+# Check Imputation quality and MAF. 
+# Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
 gunzip -c AN_basegwas.txt.gz |\
 awk 'NR==1 || ($10 > 0.8) {print}' |\
 gzip > AN_basegwas.gz
@@ -77,6 +78,12 @@ awk '!( ($4=="A" && $5=="T") || \
         ($4=="C" && $5=="G")) {print}' |\
     gzip > AN_basegwas.QC.gz
 # After the ambigeous SNPs are dropped, we now have 7002697 SNPs.
+# Check the presence of effect and non-effect allele. Here we have REF and ALT allele. If this was not directly mentioned, this should be asked from the GWA authors. Otherwise, the association will be in the opposite direction.
+# Other QC information mentioned in Readme that is of interest.
+# genotyping rate > 0.99 (herre a call rate >= 98%)
+# sample missingness < 0.02 (ok)
+# Hardy-Weinberg quilibrium (HWE) (p > 1 * 10-6)
+
 ```
 
 ## Download genetics dataset
