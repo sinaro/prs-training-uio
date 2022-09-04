@@ -41,6 +41,7 @@ Get yourself familarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and se
 The largest GWAS for AN in European populatiosn as of June 2022 was published by [Watson et al](https://pubmed.ncbi.nlm.nih.gov/31308545/). Their summary results could be downloaded from the [PGS website](https://www.med.unc.edu/pgc/download-results/).
 </details>
 
+
 * QC of base GWAS summary data
 ```bash
 # Make a directory for GWAS summary results, also known as "base" data, and download the result
@@ -125,9 +126,9 @@ eurfamily.fam <- eurfamily.fam %>%
                   select(FID, IID, sex)
 # save the covariate file (this can be useful when we want to consider the effect of covariate (sex) in PRS.R2 after combining the file with PCs. Keep header of the file).
 utils::write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
-# save the list of IDs of participants of European ancestry. Make sure there is no colname as it conflicts with PRSice2.
+# save the list of IDs of participants of European ancestry.
 eurfamily.fam <- select(eurfamily.fam, IID)
-utils::write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = FALSE, quote = FALSE)
+utils::write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 # alternatively you can download it from the Github of this tutorial.
 ```
 
