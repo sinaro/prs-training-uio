@@ -71,9 +71,10 @@ md5sum pgcAN2.2019-07.vcf.tsv.gz
 tar -czvf AN_basegwas.txt.gz  AN_basegwas.txt
 ### Do some QC of base data as descibed in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
 ## general QC information mentioned in Readme that is of interest.
-# genotyping rate > 0.99 (herre a call rate >= 98%)
+# genotyping rate > 0.99 (here a call rate >= 98%)
 # sample missingness < 0.02 (ok)
-# Hardy-Weinberg quilibrium (HWE) (p > 1 * 10-6)
+# Hardy-Weinberg equilibrium (HWE) (p > 1 * 10-6)
+# the human genome build is "GRCh37". This is important as both base and target data should be from the same build (or should become comparable with LiftOver).
 ## common QC steps for base file.
 # Check Imputation quality and MAF. 
 # Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
@@ -140,10 +141,13 @@ utils::write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, 
 eurfamily.fam <- select(eurfamily.fam, IID)
 utils::write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 # alternatively you can download it from the Github of this tutorial.
+
 ```
 
 
 ## QC of genetics data and SNP clumping using PLINK
+The target sample is recommended to be at least 100, this is the case here even after selection for participants of European ancestry. <br/>
+The human genome build should be similar between the base and target data. The [target data has used GRCh37 reference genome] (https://www.internationalgenome.org/data-portal/data-collection/phase-3). This is also the case with that of the base data (as we previously discussed in Readme of the base file) <br/>
 The genetics dataset should not contain any duplicate SNP. Othwerwise, construction of PRS might run into trouble.
 We are performing clumping of SNPs using PLINK. Although PRSice2 package is also able to perform clumping, we saw it was not optimized for our dataset.
 * Removing duplicated SNP from genetics data
@@ -198,6 +202,18 @@ module load plink/1.90b6.2
 
 # It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file.
 ```
+
+## QC relevant for base and target data
+Human genome build comparability was already checked. <br/>
+Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practivally, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
+Relatedness: ideally no relatedness of second degree or closer within base, within target, and between base and target. R file for the target has used a Kinf threshold of 0.0884. Therefore, individuals with second degree or closer familiar relationship has been removed. The base data has also mentioned PiHat > 0.2 which has to do with removal of related individuals. <br/>
+Similar ancestry: base and target data should be from a similar ancestry which is the case here (Euoropean).
+
+
+
+
+
+
 ## Running PRSice2 to construct PRS
 
 ```bash
