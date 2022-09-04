@@ -42,7 +42,7 @@ The largest GWAS for AN in European populatiosn as of June 2022 was published by
 </details>
 
 
-* QC of base GWAS summary data
+QC of base GWAS summary data
 ```bash
 # Make a directory for GWAS summary results, also known as "base" data, and download the result
 mkdir ~/prstrain/base
