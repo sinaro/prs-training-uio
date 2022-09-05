@@ -122,6 +122,7 @@ unzip 1000G_phase3_common_norel.zip
 * Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable. Note the number of individuals in the .fam file is 2490.
 Have a look at .fam2 file in the repository. Take a look at the populations. Not all of them are European populations. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
 * Get a list of IDs for particpants of European ancestry in the dataset.
+
 ```bash
 # Here we provide it using R.
 family.fam <- read.delim("~/prstrain/1000G/population/1000G_phase3_common_norel.fam2")
