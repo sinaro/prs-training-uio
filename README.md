@@ -234,24 +234,24 @@ Rscript PRSice.R \
         --pvalue PVAL \
         --target ~/prstrain/1000G/1000G_phase3_common_norel.nodup \
         --extract ~/prstrain/1000G/1000G_phase3_common_norel.nodup.clumped.clumped \
-        --keep ~/prstrain/1000G/eurfamily \
-        --cov ~/prstrain/1000G/eurfamily.cov \
-        --ignore-fid \
+        --keep ~/prstrain/1000G/eurfamily.fam \
         --bar-levels 1e-08,1e-05,0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \
         --interval 5e-05 \
         --lower 5e-08 \
         --upper 0.5 \
         --num-auto 22 \
-        --fastscore \
         --no-clump \
+        --pheno ~/prstrain/ANpheno_1000G_EUR \
+        --pheno-col caco \
         --binary-target T \
-        --no-regress \
         --seed 4059203949 \
-        --out AN_100GEUR \
+        --out AN_1000GEUR_phen \
         --thread 1 \
         --device pdf \
         --quantile 10 \
-        --print-snp
+        --print-snp \
+        --ignore-fid
+        
 
 ```
 ## Acknowledgements
