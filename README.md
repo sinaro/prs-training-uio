@@ -219,8 +219,11 @@ colnames(pcaprun)[2] <- "sample.ID"
 pcaprunfam <- left_join(pcaprun, fam2, by="sample.ID")
 g <- ggplot(pcaprunfam, aes(x = V3, y = V4, color = Super.Population)) +
 geom_point() +
+xlab("PCA1") +
+ylab("PCA2") +
 coord_fixed()
 plot(g)
+# you can clearly see that populations have a distinct cluster.
 
 ```
 
