@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2 (September 26th, 2022)
-Last update: 04.09.2022. This tutorial is in development and is not yet finalized. <br/>
+Last update: 11.09.2022. This tutorial is in development and is not yet finalized. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -203,6 +203,28 @@ module load plink/1.90b6.2
 
 # It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file.
 ```
+* PCA of population
+
+
+
+```bash
+# In this tutorial, we will use the QCed SNPs and individuals to get eigenvec of population.
+# We prune the SNPs first with plink.
+./plink --bfile 1000G_phase3_common_norel.nodup --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
+# Getting 10 first PCs using the prunes SNP file.
+./plink --bfile 1000G_phase3_common_norel.nodup --extract pcaprun.prune.in --pca 10 --out pcaprun
+# Loading the eigenvec file in R and using ggplot to visualize the population substructure.
+pcaprun <- read.table("~/prstrain/1000G/pca/pcaprun.eigenvec", quote="\"", comment.char="")
+colnames(pcaprun)[2] <- "sample.ID"
+pcaprunfam <- left_join(pcaprun, fam2, by="sample.ID")
+g <- ggplot(pcaprunfam, aes(x = V3, y = V4, color = Super.Population)) +
+geom_point() +
+coord_fixed()
+plot(g)
+
+```
+
+
 
 ## QC relevant for base and target data
 Human genome build comparability was already checked. <br/>
