@@ -141,6 +141,7 @@ ylab("PCA2") +
 coord_fixed()
 plot(g)
 # you can clearly see that populations have a distinct cluster.
+```
 
 * Get a list of IDs for particpants of European ancestry in the dataset.
 
