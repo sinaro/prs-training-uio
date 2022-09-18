@@ -1,10 +1,10 @@
 # Training for construction of polygenic risk score using PRSice2 (September 26th, 2022)
-Last update: 11.09.2022. This tutorial is in development and is not yet finalized. <br/>
-In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. Evident from the explanation, construction of a PRS is dependent on findings from GWAS.
+Last update: 18.09.2022. This tutorial is in development and is not yet finalized. <br/>
+In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. It is evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
 
-To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/). The author has provided a dataset and tutorial to [practice constructing PRS using PRSice2](https://choishingwan.github.io/PRS-Tutorial/).
+To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/).
 
 The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
 
@@ -57,8 +57,7 @@ QC of base GWAS summary data
 # Make a directory for GWAS summary results, also known as "base" data, and download the result
 mkdir ~/prstrain/base
 cd ~/prstrain/base
-!wget --content-disposition https://figshare.com/articles/dataset/an2019/14671980
-unzip 14671980.zip
+wget --content-disposition https://figshare.com/ndownloader/files/28169271
 # Compare MD5 checksum between the downloaded file and the one mentioned. They should report the same string.
 md5sum pgcAN2.2019-07.vcf.tsv.gz
 # The .vcf file has a header. In Readme file of the donwloaded dataset, it has given an R code to remove the header.
@@ -66,10 +65,8 @@ md5sum pgcAN2.2019-07.vcf.tsv.gz
 ##===R code to read in the TSV version of the VCF
 ##library(data.table)
 ##AN_basegwas.txt <-fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
-##write.table(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
-# Compress back the file 
-tar -czvf AN_basegwas.txt.gz  AN_basegwas.txt
-### Do some QC of base data as descibed in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
+##fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
+### Do some QC of base data as described in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
 ## general QC information mentioned in Readme that is of interest.
 # genotyping rate > 0.99 (here a call rate >= 98%)
 # sample missingness < 0.02 (ok)
@@ -78,7 +75,7 @@ tar -czvf AN_basegwas.txt.gz  AN_basegwas.txt
 ## common QC steps for base file.
 # Check Imputation quality and MAF. 
 # Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
-gunzip -c AN_basegwas.txt.gz |\
+cat AN_basegwas.txt.gz |\
 awk 'NR==1 || ($10 > 0.8) {print}' |\
 gzip > AN_basegwas.gz
 # No SNP dropped due to low imputation quality (8219103 SNPs).
