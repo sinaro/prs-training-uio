@@ -45,7 +45,7 @@ wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20220402.zip
 ```
 
 ## Find and download GWAS summary results for Anorexia Nervosa (AN) and perform QC of base data
-Get yourself familarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in PubMed for major GWAS in European populations for AN. Try to find the latest, and largest (highest sample size) GWAS for AN. Find if the GWAS summary results are publicly available and where you can download it.
+Get yourself familarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in [PubMed](https://pubmed.ncbi.nlm.nih.gov/) for major GWAS in European populations for AN. Is Pubmed able to interpret the phenotype "AN", and "GWAS" correctly? Try to find the latest, and largest (highest sample size) GWAS for AN. Find if the GWAS summary results are publicly available and where you can download it.
 <details>
 <summary>Find the answer here</summary>
 The largest GWAS for AN in European populatiosn as of June 2022 was published by [Watson et al](https://pubmed.ncbi.nlm.nih.gov/31308545/). Their summary results could be downloaded from the [PGS website](https://www.med.unc.edu/pgc/download-results/).
