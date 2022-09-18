@@ -225,25 +225,12 @@ module load plink/1.90b6.2
 
 # It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file.
 ```
-* PCA of population
-
-
-
-
-
-```
-
-
 
 ## QC relevant for base and target data
-Human genome build comparability was already checked. <br/>
+* Human genome build comparability was already checked. <br/>
 Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practivally, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
-Relatedness: ideally no relatedness of second degree or closer within base, within target, and between base and target. R file for the target has used a Kinf threshold of 0.0884. Therefore, individuals with second degree or closer familiar relationship has been removed. The base data has also mentioned PiHat > 0.2 which has to do with removal of related individuals. <br/>
-Similar ancestry: base and target data should be from a similar ancestry which is the case here (Euoropean).
-
-
-
-
+* Relatedness: ideally no relatedness of second degree or closer within base, within target, and between base and target. R file for the target has used a Kinf threshold of 0.0884. Therefore, individuals with second degree or closer familiar relationship has been removed. The base data has also mentioned PiHat > 0.2 which has to do with removal of related individuals. <br/>
+* Similar ancestry: base and target data should be from a similar ancestry which is the case here (Euoropean).
 
 
 ## Running PRSice2 to construct PRS
