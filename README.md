@@ -109,7 +109,7 @@ We use mostly unrelated individuals, and use SNPs in common with HapMap3 and UK 
 # Make a directory for 1000 genome data and download the genetics files 
 mkdir ~/prstrain/1000G
 cd ~/prstrain/1000G
-!wget --content-disposition https://figshare.com/ndownloader/files/17838962
+wget --content-disposition https://figshare.com/ndownloader/files/17838962
 # on Mac OS, you can try:
 # curl -O http://figshare.com/ndownloader/files/17838962 --location-trusted
 # Unzip the file:
@@ -118,11 +118,35 @@ unzip 1000G_phase3_common_norel.zip
 ```
 * Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable. Note the number of individuals in the .fam file is 2490.
 Have a look at .fam2 file in the repository. Take a look at the populations. Not all of them are European populations. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
+
+* Visualize the population by their first two PCs
+
+```bash
+# In this tutorial, we will use the QCed SNPs and individuals to get eigenvec of population.
+# We prune the SNPs first with plink.
+./plink --bfile 1000G_phase3_common_norel.nodup --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
+# Getting 10 first PCs using the prunes SNP file.
+./plink --bfile 1000G_phase3_common_norel.nodup --extract pcaprun.prune.in --pca 10 --out pcaprun
+# Loading the eigenvec file in R and using ggplot to visualize the population substructure.
+library(dplyr)
+library(ggplot2)
+pcaprun <- read.table("~/prstrain/1000G/pcaprun.eigenvec", quote="\"", comment.char="")
+fam2 <- read.delim("~/prstrain/1000G/1000G_phase3_common_norel.fam2")
+colnames(pcaprun)[2] <- "sample.ID"
+pcaprunfam <- left_join(pcaprun, fam2, by="sample.ID")
+g <- ggplot(pcaprunfam, aes(x = V3, y = V4, color = Super.Population)) +
+geom_point() +
+xlab("PCA1") +
+ylab("PCA2") +
+coord_fixed()
+plot(g)
+# you can clearly see that populations have a distinct cluster.
+
 * Get a list of IDs for particpants of European ancestry in the dataset.
 
 ```bash
 # Here we provide it using R.
-family.fam <- read.delim("~/prstrain/1000G/population/1000G_phase3_common_norel.fam2")
+family.fam <- read.delim("~/prstrain/1000G/1000G_phase3_common_norel.fam2")
 # We use R dplyr package to manipulate the dataset easier
 library(dplyr)
 # Restrict it to European samples only
@@ -137,30 +161,30 @@ eurfamily.fam <- eurfamily.fam %>%
 utils::write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 # save the list of IDs of participants of European ancestry.
 eurfamily.fam <- select(eurfamily.fam, IID)
-utils::write.table(eurfamily.fam, "eurfamily", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
+utils::write.table(eurfamily.fam, "eurfamily.txt", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 # alternatively you can download it from the Github of this tutorial.
 
 ```
 
 
 ## QC of genetics data and SNP clumping using PLINK
-The target sample is recommended to be at least 100, this is the case here even after selection for participants of European ancestry. <br/>
-The human genome build should be similar between the base and target data. The [target data has used GRCh37 reference genome] (https://www.internationalgenome.org/data-portal/data-collection/phase-3). This is also the case with that of the base data (as we previously discussed in Readme of the base file) <br/>
-The genetics dataset should not contain any duplicate SNP. Othwerwise, construction of PRS might run into trouble.
+* The target sample is recommended to be at least 100, this is the case here even after selection for participants of European ancestry. <br/>
+* The human genome build should be similar between the base and target data. The [target data has used GRCh37 reference genome] (https://www.internationalgenome.org/data-portal/data-collection/phase-3). This is also the case with that of the base data (as we previously discussed in Readme of the base file) <br/>
+* The genetics dataset should not contain any duplicate SNP. Othwerwise, construction of PRS might run into trouble.
 We are performing clumping of SNPs using PLINK. Although PRSice2 package is also able to perform clumping, we saw it was not optimized for our dataset.
 * Removing duplicated SNP from genetics data
 ```bash
 # See which SNP(s) is a duplicate in the .bim file
 cd  ~/prstrain/1000G
 cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
-# You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK. Use "out" to create new PLINK binary files.
+# You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK. Use "out" to create new PLINK binary files. Easier to copy plink binary here to work with.
 ./plink --bfile 1000G_phase3_common_norel --exclude 1.dups --make-bed --out 1000G_phase3_common_norel.nodup
 ```
 * Clumping of SNPs <br/>
 You are recommended to write a bash script. For users running on HPC clusters, it is recommened to use a job scheduler (eg. Slurm).
 
 ```bash
-# Example bash script to run on a personal device (create a file with Nano/vim text editor called "clump.sh" and execute it with ./clump.sh):
+# Example bash script to run on a personal device (create a file with Nano or Vim text editor called "clump.sh" and execute it with ./clump.sh):
 #!/bin/bash
 ./plink \
         --bfile 1000G_phase3_common_norel.nodup \
@@ -204,23 +228,7 @@ module load plink/1.90b6.2
 
 
 
-```bash
-# In this tutorial, we will use the QCed SNPs and individuals to get eigenvec of population.
-# We prune the SNPs first with plink.
-./plink --bfile 1000G_phase3_common_norel.nodup --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
-# Getting 10 first PCs using the prunes SNP file.
-./plink --bfile 1000G_phase3_common_norel.nodup --extract pcaprun.prune.in --pca 10 --out pcaprun
-# Loading the eigenvec file in R and using ggplot to visualize the population substructure.
-pcaprun <- read.table("~/prstrain/1000G/pca/pcaprun.eigenvec", quote="\"", comment.char="")
-colnames(pcaprun)[2] <- "sample.ID"
-pcaprunfam <- left_join(pcaprun, fam2, by="sample.ID")
-g <- ggplot(pcaprunfam, aes(x = V3, y = V4, color = Super.Population)) +
-geom_point() +
-xlab("PCA1") +
-ylab("PCA2") +
-coord_fixed()
-plot(g)
-# you can clearly see that populations have a distinct cluster.
+
 
 ```
 
