@@ -80,7 +80,7 @@ fwrite(AN_basegwas_imp, "AN_basegwas_imp.gz", sep="\t")
 # Check for duplicate SNPs
 gunzip -c AN_basegwas_imp.gz |\
 awk '{seen[$3]++; if(seen[$3]==1){ print}}' |\
-gzip - > AN_basegwas.nodup.gz
+gzip > AN_basegwas.nodup.gz
 # After the duplicate SNPs are dropped, we now have 7732135 SNPs.
 # Removing ambigeous SNPs
 gunzip -c AN_basegwas.nodup.gz |\
