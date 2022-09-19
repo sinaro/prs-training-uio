@@ -73,15 +73,16 @@ fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, co
 ## common QC steps for base file.
 # Check Imputation quality and MAF. 
 # Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
-cat AN_basegwas.txt |\
-awk 'NR==1 || ($10 > 0.8) {print}' |\
-gzip > AN_basegwas.gz
-# No SNP dropped due to low imputation quality (8219103 SNPs).
+library(data.table)
+AN_basegwas <- fread("pgcAN2.2019-07.vcf.tsv.gz")
+AN_basegwas_imp <- AN_basegwas[IMPINFO > 0.8]
+fwrite(AN_basegwas_imp, "AN_basegwas_imp.gz", sep="\t")
+# 7818560 SNPs left after imputation quality check.
 # Check for duplicate SNPs
-gunzip -c AN_basegwas.gz |\
+gunzip -c AN_basegwas_imp.gz |\
 awk '{seen[$3]++; if(seen[$3]==1){ print}}' |\
 gzip - > AN_basegwas.nodup.gz
-# After the duplicate SNPs are dropped, we now have 8125798 SNPs.
+# After the duplicate SNPs are dropped, we now have 7732135 SNPs.
 # Removing ambigeous SNPs
 gunzip -c AN_basegwas.nodup.gz |\
 awk '!( ($4=="A" && $5=="T") || \
@@ -89,7 +90,7 @@ awk '!( ($4=="A" && $5=="T") || \
         ($4=="G" && $5=="C") || \
         ($4=="C" && $5=="G")) {print}' |\
     gzip > AN_basegwas.QC.gz
-# After the ambigeous SNPs are dropped, we now have 7002697 SNPs.
+# After the ambigeous SNPs are dropped, we now have 6663432 SNPs.
 # Mismatching SNPs: this is taken care of by the program. The program also reports this in a file.
 # Check the presence of effect and non-effect allele. Here we have REF and ALT allele. If this was not directly mentioned, this should be asked from the GWA authors. Otherwise, the association will be in the opposite direction.
 # SNPs on sex chromosome. There are models that can use such information but we are working with automal SNPs.
