@@ -78,7 +78,7 @@ fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, co
 ## common QC steps for base file.
 # Check Imputation quality and MAF. 
 # Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
-cat AN_basegwas.txt.gz |\
+cat AN_basegwas.txt |\
 awk 'NR==1 || ($10 > 0.8) {print}' |\
 gzip > AN_basegwas.gz
 # No SNP dropped due to low imputation quality (8219103 SNPs).
