@@ -62,8 +62,8 @@ md5sum pgcAN2.2019-07.vcf.tsv.gz
 ##===R code to read in the TSV version of the VCF
 install.packages("data.table")
 library(data.table)
-AN_basegwas.txt <- fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
-fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE, sep="\t")
+AN_basegwas <- fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
+#fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE, sep="\t")
 ### Do some QC of base data as described in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
 ## general QC information mentioned in Readme that is of interest.
 # genotyping rate > 0.99 (here a call rate >= 98%)
@@ -74,8 +74,7 @@ fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, co
 # Check Imputation quality and MAF. 
 # Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
 library(data.table)
-AN_basegwas <- fread("pgcAN2.2019-07.vcf.tsv.gz")
-AN_basegwas_imp <- AN_basegwas[IMPINFO > 0.8]
+AN_basegwas_imp <- AN_basegwas[IMPINFO > 0.8]   #or you can use subset from dplyr: <AN_basegwas_imp <- subset(AN_basegwas, IMPINFO > 0.8)>
 fwrite(AN_basegwas_imp, "AN_basegwas_imp.gz", sep="\t")
 # 7818560 SNPs left after imputation quality check.
 # Check for duplicate SNPs
