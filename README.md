@@ -273,6 +273,7 @@ Rscript PRSice.R \
         --ignore-fid
         
 ```
+
 * Check and discuss the output of Prsice2, and the generated files.
 
 ## Running PRSice2 on HPC
