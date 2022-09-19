@@ -280,6 +280,9 @@ Rscript PRSice.R \
 ```
 *Check and discuss the output of Prsice2, and the generated files.
 
+## Questions and comments
+Please do no hesitate to get in touch with me in case you have any questions or comments (sina.rostami@farmasi.uio.no). 
+
 ## Acknowledgements
 I would like to thank Nasimeh Naseri who contributed to this document. 
 
