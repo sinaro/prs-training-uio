@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2 (September 26th, 2022)
-Last update: 18.09.2022. This tutorial is in development and is not yet finalized. <br/>
+Last update: 19.09.2022. This tutorial is in development and is not yet finalized. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. It is evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -37,12 +37,7 @@ unzip plink_linux_x86_64_20220402.zip
 # use chmod for correctly setting the executability if required.
 ./plink --help
 ./PRSice_linux --help
-## On an HPC environment (eg. TSD Linux)
-# you need to be on the compute node (not the login node) [on TSD, "ssh -Y p****-submit"]
-# you can search for available modules [module spider plink]
-# if available, you can load the module and use it [module load plink/1.90b6.2]
-# however, we do not have PRsice2 available as a module on TSD. The installation can be "ordered" to the helpdesk, or the binary file can be transferred and directly used.
-# This requires tsd-api-client to be installed and registered on an online environemnt (given the offline nature of TSD), to upload the file to the tsd project (please get in touch if you need assistance with this).
+
 
 ```
 
@@ -67,8 +62,8 @@ md5sum pgcAN2.2019-07.vcf.tsv.gz
 ##===R code to read in the TSV version of the VCF
 install.packages("data.table")
 library(data.table)
-AN_basegwas.txt <-fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
-fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
+AN_basegwas.txt <- fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
+fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE, sep="\t")
 ### Do some QC of base data as described in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
 ## general QC information mentioned in Readme that is of interest.
 # genotyping rate > 0.99 (here a call rate >= 98%)
@@ -280,6 +275,12 @@ Rscript PRSice.R \
 
 ## Running PRSice2 on HPC
 * a brief overview of offline and online HPC system, transferring of data/environment to an offline system, login node and submit node, modules, and Slurm.
+* you need to be on the compute node (not the login node) [on TSD, "ssh -Y p****-submit"]
+* you can search for available modules [module spider plink]
+* if available, you can load the module and use it [module load plink/1.90b6.2]
+* however, we do not have PRsice2 available as a module on TSD. The installation can be "ordered" to the helpdesk, or the binary file can be transferred and directly used.
+* This requires tsd-api-client to be installed and registered on an online environemnt (given the offline nature of TSD), to upload the file to the tsd project (please get in touch if you need assistance with this).
+
 
 ```bash
 # Example Slurm script to run on an HPC cluster:
