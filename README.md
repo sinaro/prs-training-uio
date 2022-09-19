@@ -294,10 +294,9 @@ module load R-bundle-Bioconductor/3.11.foss-2020a-R-4.0.0
 
 # Run the prsice analysis with the Rscript
 Rscript PRSice.R \
+        # The rest of arguments (base etc) is the same as above.
 
-
-
-
+```
 
 ## Questions and comments
 Please do no hesitate to get in touch with me in case you have any questions or comments (sina.rostami@farmasi.uio.no). A 45-minute Zoom meeting is scheduled for Friday, October 7th at 13.00 for those who would like to discuss anything related to this session (if interested, send an email).
