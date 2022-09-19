@@ -229,17 +229,23 @@ module load plink/1.90b6.2
 
 ## QC relevant for base and target data
 * Human genome build comparability was already checked. <br/>
-Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practivally, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
+* Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practivally, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
 * Relatedness: ideally no relatedness of second degree or closer within base, within target, and between base and target. R file for the target has used a Kinf threshold of 0.0884. Therefore, individuals with second degree or closer familiar relationship has been removed. The base data has also mentioned PiHat > 0.2 which has to do with removal of related individuals. <br/>
 * Similar ancestry: base and target data should be from a similar ancestry which is the case here (Euoropean).
 
+## Downloading phenotype (AN) data
+* Find the phenotype dataset on Github and download it as a "raw" file in the main prstrain directory:
+```bash
+wget https://raw.githubusercontent.com/sinaro/prs-training-uio/main/ANpheno_1000G_EUR
+# Take a look at the phenotype file and check if the coding of phenotype file corresponds to that of documentation of plink .fam file.
+```
 
 ## Running PRSice2 to construct PRS
 
 ```bash
-# Example bash script to run on a personal device (create a file called "prsiceR_AN.sh" with the conent indicated below and execute it in bash):
+# Example bash script to run on a personal device (create a file called "prsiceR_AN.sh" in the main prstrain directory with the content indicated below and execute it in bash):
 # To check which commands are available in PRSice2 and their description, check: http://www.prsice.info/command_detail/
-# We use --fastscore to only calculate threshold stated in --bar-levels. This is to enhance the speed in this training. Otherwise, if --fast-score is not used, it creates PRS for a range stated from --lower, to --upper, with the specified --interval.
+# You can use --fastscore to only calculate threshold stated in --bar-levels. If --fast-score is not used, it creates PRS for a range stated from --lower, to --upper, with the specified --interval.
 
 #!/bin/bash
 Rscript PRSice.R \
@@ -253,10 +259,10 @@ Rscript PRSice.R \
         --pvalue PVAL \
         --target ~/prstrain/1000G/1000G_phase3_common_norel.nodup \
         --extract ~/prstrain/1000G/1000G_phase3_common_norel.nodup.clumped.clumped \
-        --keep ~/prstrain/1000G/eurfamily.fam \
+        --keep ~/prstrain/1000G/eurfamily.txt \
         --bar-levels 1e-08,1e-05,0.001,0.05,0.1,0.2,0.3,0.4,0.5,1 \
-        --interval 5e-05 \
         --lower 5e-08 \
+        --interval 5e-05 \
         --upper 0.5 \
         --num-auto 22 \
         --no-clump \
@@ -271,8 +277,9 @@ Rscript PRSice.R \
         --print-snp \
         --ignore-fid
         
-
 ```
+*Check and discuss the output of Prsice2, and the generated files.
+
 ## Acknowledgements
 I would like to thank Nasimeh Naseri who contributed to this document. 
 
