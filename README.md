@@ -32,6 +32,7 @@ wget https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux
 unzip PRSice_linux.zip
 ## Download PLINK
 wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20220402.zip
+unzip plink_linux_x86_64_20220402.zip
 # test the binary files for executability
 # use chmod for correctly setting the executability if required.
 ./plink --help
@@ -64,9 +65,10 @@ md5sum pgcAN2.2019-07.vcf.tsv.gz
 # The .vcf file has a header. In Readme file of the donwloaded dataset, it has given an R code to remove the header.
 # Remove the header of .vcf file and save it
 ##===R code to read in the TSV version of the VCF
-##library(data.table)
-##AN_basegwas.txt <-fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
-##fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
+install.packages("data.table")
+library(data.table)
+AN_basegwas.txt <-fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
+fwrite(AN_basegwas.txt, file="AN_basegwas.txt", quote=FALSE, row.names=FALSE, col.names=TRUE)
 ### Do some QC of base data as described in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
 ## general QC information mentioned in Readme that is of interest.
 # genotyping rate > 0.99 (here a call rate >= 98%)
