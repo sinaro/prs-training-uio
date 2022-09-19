@@ -126,6 +126,8 @@ Have a look at .fam2 file in the repository. Take a look at the populations. Not
 # Getting 10 first PCs using the prunes SNP file.
 ./plink --bfile 1000G_phase3_common_norel.nodup --extract pcaprun.prune.in --pca 10 --out pcaprun
 # Loading the eigenvec file in R and using ggplot to visualize the population substructure.
+install.packages("dplyr")
+install.packages("ggplot2")
 library(dplyr)
 library(ggplot2)
 pcaprun <- read.table("~/prstrain/1000G/pcaprun.eigenvec", quote="\"", comment.char="")
@@ -194,7 +196,7 @@ You are recommended to write a bash script. For users running on HPC clusters, i
         --clump-snp-field ID \
         --clump-field PVAL \
         --out 1000G_phase3_common_norel.nodup.clumped
-# It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file
+# It reports 168483 clumps formed from 1232246 top variants, and results written to .clumped file
 ```
 
 ```bash
