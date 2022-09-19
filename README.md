@@ -203,26 +203,20 @@ You are recommended to write a bash script. For users running on HPC clusters, i
 ```bash
 # Example Slurm script to run on an HPC cluster:
 #!/bin/bash
-#SBATCH --jobname=plink_prstrain_20220925
+#SBATCH --jobname=plink_prstrain_20220926
 #SBATCH --account=[to be assigned]
 #SBATCH --partition=[accel]
 #SBATCH --time=00:15:00
-#SBATCH --mem-per-cpu=12G
-#SBATCH --cpus-per-task=6
+#SBATCH --mem-per-cpu=1G
+#SBATCH --cpus-per-task=1
 
 # Set up job environment
 module purge
 module load plink/1.90b6.2
 
 ./plink \
-        --bfile 1000G_phase3_common_norel.nodup \
-        --clump ~/prstrain/base/AN_basegwas.QC.gz \
-        --clump-p1 1.0 \
-        --clump-kb 250 \
-        --clump-r2 0.1 \
-        --clump-snp-field ID \
-        --clump-field PVAL \
-        --out 1000G_phase3_common_norel.nodup.clumped
+        # The rest of arguments (bfile etc) is the same as above.
+
 
 # It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file.
 ```
@@ -247,6 +241,7 @@ wget https://raw.githubusercontent.com/sinaro/prs-training-uio/main/ANpheno_1000
 # To check which commands are available in PRSice2 and their description, check: http://www.prsice.info/command_detail/
 # You can use --fastscore to only calculate threshold stated in --bar-levels. If --fast-score is not used, it creates PRS for a range stated from --lower, to --upper, with the specified --interval.
 
+# Run the prsice analysis with the Rscript
 #!/bin/bash
 Rscript PRSice.R \
         --prsice PRSice_linux \
@@ -278,10 +273,34 @@ Rscript PRSice.R \
         --ignore-fid
         
 ```
-*Check and discuss the output of Prsice2, and the generated files.
+* Check and discuss the output of Prsice2, and the generated files.
+
+## Running PRSice2 on HPC
+* a brief overview of offline and online HPC system, transferring of data/environment to an offline system, login node and submit node, modules, and Slurm.
+
+```bash
+# Example Slurm script to run on an HPC cluster:
+#!/bin/bash
+#SBATCH --jobname=prscie_prstrain_20220926
+#SBATCH --account=[to be assigned]
+#SBATCH --partition=[accel]
+#SBATCH --time=00:15:00
+#SBATCH --mem-per-cpu=1G
+#SBATCH --cpus-per-task=1
+
+# Set up job environment
+module purge
+module load R-bundle-Bioconductor/3.11.foss-2020a-R-4.0.0
+
+# Run the prsice analysis with the Rscript
+Rscript PRSice.R \
+
+
+
+
 
 ## Questions and comments
-Please do no hesitate to get in touch with me in case you have any questions or comments (sina.rostami@farmasi.uio.no). 
+Please do no hesitate to get in touch with me in case you have any questions or comments (sina.rostami@farmasi.uio.no). A 45-minute Zoom meeting is scheduled for Friday, October 7th at 13.00 for those who would like to discuss anything related to this session (if interested, send an email).
 
 ## Acknowledgements
 I would like to thank Nasimeh Naseri who contributed to this document. 
