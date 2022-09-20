@@ -217,20 +217,19 @@ module load plink/1.90b6.2
 ./plink \
         # The rest of arguments (bfile etc) is the same as above.
 
-
 # It reports 168483 clumps formed from 1232246 top variants, and results written to .clumped file.
-
 ```
 
 ## QC relevant for base and target data
 * Human genome build comparability was already checked. <br/>
 * Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practivally, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
 * Relatedness: ideally no relatedness of second degree or closer within base, within target, and between base and target. R file for the target has used a King threshold of 0.0884. Therefore, individuals with second degree or closer familiar relationship have been removed. The base data has also mentioned PiHat > 0.2 which has to do with removal of related individuals. <br/>
-* Similar ancestry: base and target data should be from a similar ancestry which is the case here (Euroropean).
+* Similar ancestry: base and target data should be from the same ancestry which is the case here (European).
 
 ## Downloading phenotype (AN) data
 * Find the phenotype dataset on Github and download it as a "raw" file in the main prstrain directory:
 ```bash
+# Download phenotype file
 wget https://raw.githubusercontent.com/sinaro/prs-training-uio/main/ANpheno_1000G_EUR
 # Take a look at the phenotype file and check if the coding of phenotype file corresponds to that of documentation of plink .fam file.
 ```
@@ -271,7 +270,8 @@ Rscript PRSice.R \
         --device pdf \
         --quantile 10 \
         --print-snp \
-        --ignore-fid
+        --ignore-fid \
+        --all-score
 ```
 
 * Check and discuss the output of Prsice2, and the generated files.
@@ -305,8 +305,8 @@ Rscript PRSice.R \
 ```
 
 ## Questions and comments
-Please do no hesitate to get in touch with me in case you have any questions or comments (sina.rostami@farmasi.uio.no). A 30 to 45 minute Zoom meeting is scheduled for Friday, October 7th at 13.00 for those who would like to discuss anything related to this session (if interested, send an email).
+Please do no hesitate to get in touch in case you have any questions or comments (sina.rostami@farmasi.uio.no). A 30 to 45 minute Zoom meeting is scheduled for Friday, October 7th at 13.00 for those who would like to discuss anything related to this session (if interested, send an email).
 
 ## Acknowledgements
-I would like to thank Nasimeh Naseri who contributed to this document (compatibility with Mac OS). 
+I would like to thank Nasimeh Naseri who contributed to this document by testing compatibility with Mac OS. 
 
