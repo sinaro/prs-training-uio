@@ -9,61 +9,60 @@ To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih
 The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
 
 ## Source materials for practical
-Source materials for this tutorial can be found in the [Github repository](https://github.com/sinaro/prs-training-uio)
-
+* Source materials for this tutorial can be found in the [Github repository](https://github.com/sinaro/prs-training-uio).
+* all code lines are compatible with bash, unless otherwise stated for R.
 ## Downloading packages
-The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
-This training was tested on Ubuntu 20.04.4 LTS, Red Hat Enterprise Linux Server release 7.9 (Maipo), and Mac OS (Catalina, version 10.15.7).
-The tutorial assumes that you have root/admin privileges on your device. On an HPC system, this also works but it might differ in some steps.
+* The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
+* This training was tested on Ubuntu 20.04.4 LTS, Red Hat Enterprise Linux Server release 7.9 (Maipo), and Mac OS (Catalina, version 10.15.7).
+* The tutorial assumes that you have root/admin privileges on your device. On an HPC system, this also works but it might differ in some steps.
 
-Downloading packages:
+* Downloading packages:
 ```bash
-
 # Make a directory and download the packages 
 mkdir ~/prstrain
 cd prstrain
-## Download PRSice2
+## Download PRSice2 and unzip it
+unzip PRSice_linux.zip
 wget https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip
 # Note "wget" might not be available by default on Mac. You might want to test "curl" instead. Check their availability by "which wget" and "which curl".
 # If "curl" is available. You can try downloading the link by:
 # curl -o ./prs "https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip"
 # If this solution did not work as well, you need to directly download it and then transfer it to your work directory.
 # You might need to go to security on Mac and choose "allow it anyway".
-unzip PRSice_linux.zip
-## Download PLINK
+## Download PLINK and unzip it
 wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20220402.zip
 unzip plink_linux_x86_64_20220402.zip
 # test the binary files for executability
-# use chmod for correctly setting the executability if required.
 ./plink --help
 ./PRSice_linux --help
-
-
+# Optional: you can put the binaries in the PATH so it will be accessible system-wide (rather than in a specific directory).
 ```
 
 ## Find and download GWAS summary results for Anorexia Nervosa (AN) and perform QC of base data
-Get yourself familiarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in [PubMed](https://pubmed.ncbi.nlm.nih.gov/) for major GWAS in European populations for AN. Is Pubmed able to interpret the phenotype "AN", and "GWAS" correctly? Try to find the latest, and largest (highest sample size) GWAS for AN. Find if the GWAS summary results are publicly available and where you can download it.
+* Get yourself familiarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in [PubMed](https://pubmed.ncbi.nlm.nih.gov/) for major GWAS in European populations for AN <br/>. 
+* Is Pubmed able to interpret the phenotype "AN", and "GWAS" correctly? <br/>
+* Try to find the latest, and largest (highest sample size) GWAS for AN. Find if the GWAS summary results are publicly available and where you can download it.
 <details>
-<summary>Find the answer here</summary>
+<summary>Click and find the answer here</summary>
 The largest GWAS for AN in European population as of June 2022 was published by [Watson et al](https://pubmed.ncbi.nlm.nih.gov/31308545/). Their summary results could be downloaded from the [PGS website](https://www.med.unc.edu/pgc/download-results/).
 </details>
 
 
-QC of base GWAS summary data
+* QC of base GWAS summary data
 ```bash
-# Make a directory for GWAS summary results, also known as "base" data, and download the result
+# Make a directory for GWAS summary results, also known as "base" data, and download the summary results
 mkdir ~/prstrain/base
 cd ~/prstrain/base
 wget --content-disposition https://figshare.com/ndownloader/files/28169271
 # Compare MD5 checksum between the downloaded file and the one mentioned. They should report the same string.
 md5sum pgcAN2.2019-07.vcf.tsv.gz
-# The .vcf file has a header. In Readme file of the downoaded dataset, it has given an R code to remove the header.
+# The .vcf file has a header.
 # Remove the header of .vcf file and save it
 ##===R code to read in the TSV version of the VCF
 install.packages("data.table")
 library(data.table)
 AN_basegwas <- fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",stringsAsFactors=FALSE, data.table=FALSE)
-# 8219102 SNPs.
+# 8219102 SNPs in the file.
 ### Do some QC of base data as described in PRSice2 basic tutorial (https://choishingwan.github.io/PRS-Tutorial/base/)
 ## general QC information mentioned in Readme that is of interest.
 # genotyping rate > 0.99 (here a call rate >= 98%)
@@ -72,7 +71,7 @@ AN_basegwas <- fread(file="pgcAN2.2019-07.vcf.tsv.gz", skip="CHROM\tPOS",strings
 # the human genome build is "GRCh37". This is important as both base and target data should be from the same build (or should become comparable with LiftOver).
 ## common QC steps for base file.
 # Check Imputation quality and MAF. 
-# Check if imputation quality is above 0.8. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
+# Check if imputation quality is above 0.8 in R. The base data does not have minor allele frequency (MAF) information to check, but the Readme file states MAF > 0.01 
 library(data.table)
 install.packages("dplyr")
 library(dplyr)
@@ -84,7 +83,7 @@ gunzip -c AN_basegwas_imp.gz |\
 awk '{seen[$3]++; if(seen[$3]==1){ print}}' |\
 gzip > AN_basegwas.nodup.gz
 # After that the duplicate SNPs are dropped, we now have 7732135 SNPs.
-# Removing ambigeous SNPs
+## Removing ambigeous SNPs
 gunzip -c AN_basegwas.nodup.gz |\
 awk '!( ($4=="A" && $5=="T") || \
         ($4=="T" && $5=="A") || \
@@ -92,13 +91,11 @@ awk '!( ($4=="A" && $5=="T") || \
         ($4=="C" && $5=="G")) {print}' |\
     gzip > AN_basegwas.QC.gz
 # After the ambigueous SNPs are dropped, we now have 6663432 SNPs.
-# Mismatching SNPs: this is taken care of by the program. The program also reports this in a file.
-# Check the presence of effect and non-effect allele. Here we have REF and ALT allele. If this was not directly mentioned, this should be asked from the GWA authors. Otherwise, the association will be in the opposite direction.
-# SNPs on sex chromosome. There are models that can use such information but we are working with autosomal SNPs.
+## Mismatching SNPs: this is taken care of by the program. The program also reports this in a file.
+## Check the presence of effect and non-effect allele. Here we have REF and ALT allele. If this was not directly mentioned, this should be asked from the GWA authors. Otherwise, the association will be in the opposite direction.
+## SNPs on sex chromosome. There are models that can use such information but we are working with autosomal SNPs.
 less AN_basegwas.txt | awk '{print $1}' | sort -n | uniq -c
-# Here you see you only have SNPs on autosomal chromosomes (ch 1-22).
-
-
+## Here you see you only have SNPs on autosomal chromosomes (ch 1-22).
 ```
 
 ## Download 1000 Genomes genetics dataset and prepare it for analysis
@@ -106,28 +103,29 @@ less AN_basegwas.txt | awk '{print $1}' | sort -n | uniq -c
 * We use mostly unrelated individuals, and use SNPs in common with HapMap3 and UK Biobank. This dataset is provided by Florian Privé and is available [online](https://figshare.com/articles/dataset/1000_genomes_phase_3_files_with_SNPs_in_common_with_HapMap3/9208979).
 * Downloading genetics dataset
 ```bash
-# Make a directory for 1000 genome data and download the genetics files 
+# Make a directory for 1000 genome data, download the binary plink files, and unzip it.
 mkdir ~/prstrain/1000G
 cd ~/prstrain/1000G
 wget --content-disposition https://figshare.com/ndownloader/files/17838962
-# on Mac OS, you can try:
-# curl -O http://figshare.com/ndownloader/files/17838962 --location-trusted
-# Unzip the file:
 unzip 1000G_phase3_common_norel.zip 
+# on Mac OS, you can try: <curl -O http://figshare.com/ndownloader/files/17838962 --location-trusted>
 # You should now have binary PLINK files
 ```
 * Spend some minutes exploring the .fam and .bim file. Note .bed is not human-readable. Note the number of individuals in the .fam file is 2490.
-Have a look at .fam2 file in the repository. Take a look at the populations. Not all of them are European populations. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
+Have a look at .fam2 file in the repository. Take a look at the populations. Not all of them are European. We generally would like to construct PRS in specific populations (in our tutorial, only European ancestry). 
 
-* Visualize the population by their first two PCs
+* Visualize the population ancestry structure by their first two PCs
 
 ```bash
-# In this tutorial, we will use the QCed SNPs and individuals to get eigenvec of population.
+# In this tutorial, we will use the QC'ed SNPs and individuals to get eigenvec of population.
+# To get familiar with PCA (a dimensionality reduction method), please follow a video by [StatQuest](https://www.youtube.com/watch?v=FgakZw6K1QQ)
+# PC1 and PC2 explain the the first and second highest variance, respectively.
 # We prune the SNPs first with plink.
 ./plink --bfile 1000G_phase3_common_norel.nodup --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
-# Getting 10 first PCs using the prunes SNP file.
+# Getting 10 first PCs using the pruned SNP file.
 ./plink --bfile 1000G_phase3_common_norel.nodup --extract pcaprun.prune.in --pca 10 --out pcaprun
 # Loading the eigenvec file in R and using ggplot to visualize the population substructure.
+# Note we use .fam2 file to color code points by population ancestry.
 install.packages("dplyr")
 install.packages("ggplot2")
 library(dplyr)
@@ -142,7 +140,7 @@ gpcaprunfam <- ggplot(pcaprunfam, aes(x = V3, y = V4, color = Super.Population))
         ylab("PCA2") +
         coord_fixed()
 plot(gpcaprunfam)
-# you can clearly see that populations have a distinct cluster.
+# you can clearly see that populations have a distinct cluster for PC1 and PC2, and that members of the European ancestry tend to cluster nicely (no outlier).
 ```
 
 * Get a list of IDs for participants of European ancestry in the dataset.
@@ -166,7 +164,6 @@ utils::write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, 
 eurfamily.fam <- select(eurfamily.fam, IID)
 utils::write.table(eurfamily.fam, "eurfamily.txt", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 # alternatively you can download it from the Github of this tutorial.
-
 ```
 
 
@@ -220,6 +217,7 @@ module load plink/1.90b6.2
 
 
 # It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file.
+
 ```
 
 ## QC relevant for base and target data
@@ -272,7 +270,6 @@ Rscript PRSice.R \
         --quantile 10 \
         --print-snp \
         --ignore-fid
-        
 ```
 
 * Check and discuss the output of Prsice2, and the generated files.
@@ -303,12 +300,11 @@ module load R-bundle-Bioconductor/3.11.foss-2020a-R-4.0.0
 # Run the prsice analysis with the Rscript
 Rscript PRSice.R \
         # The rest of arguments (base etc) is the same as above.
-
 ```
 
 ## Questions and comments
 Please do no hesitate to get in touch with me in case you have any questions or comments (sina.rostami@farmasi.uio.no). A 30 to 45 minute Zoom meeting is scheduled for Friday, October 7th at 13.00 for those who would like to discuss anything related to this session (if interested, send an email).
 
 ## Acknowledgements
-I would like to thank Nasimeh Naseri who contributed to this document. 
+I would like to thank Nasimeh Naseri who contributed to this document (compatibility with Mac OS). 
 
