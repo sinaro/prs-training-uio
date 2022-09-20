@@ -24,8 +24,8 @@ We use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) 
 mkdir ~/prstrain
 cd prstrain
 ## Download PRSice2 and unzip it
-unzip PRSice_linux.zip
 wget https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip
+unzip PRSice_linux.zip
 # Note "wget" might not be available by default on Mac. You might want to test "curl" instead. Check their availability by "which wget" and "which curl".
 # If "curl" is available. You can try downloading the link by:
 # curl -o ./prs "https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip"
@@ -225,7 +225,7 @@ module load plink/1.90b6.2
 
 ## QC relevant for base and target data
 * Human genome build comparability was already checked. <br/>
-* Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practivally, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
+* Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practically, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
 * Relatedness: ideally no relatedness of second degree or closer within base, within target, and between base and target. R file for the target has used a King threshold of 0.0884. Therefore, individuals with second degree or closer familiar relationship have been removed. The base data has also mentioned PiHat > 0.2 which has to do with removal of related individuals. <br/>
 * Similar ancestry: base and target data should be from the same ancestry which is the case here (European).
 
