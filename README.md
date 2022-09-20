@@ -6,13 +6,8 @@ This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-ris
 
 To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/).
 
-
 The outcome of interest in this training is Anorexia Nervosa (AN). "[AN](https://www.mayoclinic.org/diseases-conditions/anorexia-nervosa/symptoms-causes/syc-20353591) is an eating disorder characterized by an abnormally low body weight, an intense fear of gaining weight and a distorted perception of weight. People with anorexia place a high value on controlling their weight and shape, using extreme efforts that tend to significantly interfere with their lives".
-
-and we use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
-
-
-
+We use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
 
 ## Source materials for practical
 * Source materials for this tutorial can be found in the [Github repository](https://github.com/sinaro/prs-training-uio).
