@@ -118,7 +118,7 @@ Have a look at .fam2 file in the repository. Take a look at the populations. Not
 
 ```bash
 # In this tutorial, we will use the QC'ed SNPs and individuals to get eigenvec of population.
-# To get familiar with PCA (a dimensionality reduction method), please follow a video by [StatQuest](https://www.youtube.com/watch?v=FgakZw6K1QQ)
+# To get familiar with PCA (a dimensionality reduction method), please follow a video by (StatQuest)[https://www.youtube.com/watch?v=FgakZw6K1QQ)].
 # PC1 and PC2 explain the the first and second highest variance, respectively.
 # We prune the SNPs first with plink.
 ./plink --bfile 1000G_phase3_common_norel.nodup --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
