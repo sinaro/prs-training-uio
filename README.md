@@ -11,6 +11,7 @@ The outcome of interest in this training is Anorexia Nervosa (AN) and we use gen
 ## Source materials for practical
 * Source materials for this tutorial can be found in the [Github repository](https://github.com/sinaro/prs-training-uio).
 * all code lines are compatible with bash, unless otherwise stated for R.
+
 ## Downloading packages
 * The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
 * This training was tested on Ubuntu 20.04.4 LTS, Red Hat Enterprise Linux Server release 7.9 (Maipo), and Mac OS (Catalina, version 10.15.7).
@@ -39,7 +40,7 @@ unzip plink_linux_x86_64_20220402.zip
 ```
 
 ## Find and download GWAS summary results for Anorexia Nervosa (AN) and perform QC of base data
-* Get yourself familiarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in [PubMed](https://pubmed.ncbi.nlm.nih.gov/) for major GWAS in European populations for AN <br/>. 
+* Get yourself familiarize with [GWAS Catalog](https://www.ebi.ac.uk/gwas/), and search in [PubMed](https://pubmed.ncbi.nlm.nih.gov/) for major GWAS in European populations for AN. <br/> 
 * Is Pubmed able to interpret the phenotype "AN", and "GWAS" correctly? <br/>
 * Try to find the latest, and largest (highest sample size) GWAS for AN. Find if the GWAS summary results are publicly available and where you can download it.
 <details>
@@ -101,6 +102,7 @@ less AN_basegwas.txt | awk '{print $1}' | sort -n | uniq -c
 ## Download 1000 Genomes genetics dataset and prepare it for analysis
 * We ues publicly available datasets from [1000 Genomes phase 3 release](https://www.internationalgenome.org/data-portal/data-collection/phase-3).<br/>
 * We use mostly unrelated individuals, and use SNPs in common with HapMap3 and UK Biobank. This dataset is provided by Florian Privé and is available [online](https://figshare.com/articles/dataset/1000_genomes_phase_3_files_with_SNPs_in_common_with_HapMap3/9208979).
+* QC is done both at SNP level and at sample/population level.
 * Downloading genetics dataset
 ```bash
 # Make a directory for 1000 genome data, download the binary plink files, and unzip it.
@@ -120,7 +122,7 @@ Have a look at .fam2 file in the repository. Take a look at the populations. Not
 # In this tutorial, we will use the QC'ed SNPs and individuals to get eigenvec of population.
 # To get familiar with PCA (a dimensionality reduction method), please follow a video by (StatQuest)[https://www.youtube.com/watch?v=FgakZw6K1QQ)].
 # PC1 and PC2 explain the the first and second highest variance, respectively.
-# We prune the SNPs first with plink.
+# We LD-prune the SNPs first with plink
 ./plink --bfile 1000G_phase3_common_norel.nodup --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
 # Getting 10 first PCs using the pruned SNP file.
 ./plink --bfile 1000G_phase3_common_norel.nodup --extract pcaprun.prune.in --pca 10 --out pcaprun
