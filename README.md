@@ -158,7 +158,7 @@ eurfamily.fam <- eurfamily.fam %>%
                   rename(IID=sample.ID) %>% 
                   mutate(FID = IID) %>% 
                   select(FID, IID, sex)
-# save the covariate file (this can be useful when we want to consider the effect of covariate (sex) in PRS.R2 after combining the file with PCs. Keep header of the file).
+# save the covariate file (this can be useful when we want to compare the the null model explained variance (sex, age, PCs, etc) to that of PRS. Keep header of the file).
 utils::write.table(eurfamily.fam, "eurfamily.cov", sep="\t", row.names = FALSE, col.names = TRUE, quote = FALSE)
 # save the list of IDs of participants of European ancestry.
 eurfamily.fam <- select(eurfamily.fam, IID)
@@ -177,7 +177,9 @@ We are performing clumping of SNPs using PLINK. Although PRSice2 package is also
 # See which SNP(s) is a duplicate in the .bim file
 cd  ~/prstrain/1000G
 cut -f 2 1000G_phase3_common_norel.bim | sort | uniq -d > 1.dups
-# You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK. Use "out" to create new PLINK binary files. Easier to copy plink binary here to work with.
+# You see one SNP was duplicated. You can remove this SNP pair from the genetics data using PLINK. Use "out" to create new PLINK binary files. 
+# Easier to copy plink binary to this directory to work with.
+# Note that the plink binary files need to be treated all together with plink. You cannot, and should not, for instance, treat .bim file as a text file to manipulate!
 ./plink --bfile 1000G_phase3_common_norel --exclude 1.dups --make-bed --out 1000G_phase3_common_norel.nodup
 ```
 * Clumping of SNPs <br/>
@@ -216,7 +218,7 @@ module load plink/1.90b6.2
         # The rest of arguments (bfile etc) is the same as above.
 
 
-# It reports 177330 clumps formed from 1259600 top variants, and results written to .clumped file.
+# It reports 168483 clumps formed from 1232246 top variants, and results written to .clumped file.
 
 ```
 
