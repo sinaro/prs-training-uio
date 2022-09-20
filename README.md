@@ -6,18 +6,24 @@ This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-ris
 
 To get familiar with PRS, read this [tutorial paper](https://pubmed.ncbi.nlm.nih.gov/32709988/).
 
-The outcome of interest in this training is Anorexia Nervosa (AN) and we use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
+
+The outcome of interest in this training is Anorexia Nervosa (AN). "[AN](https://www.mayoclinic.org/diseases-conditions/anorexia-nervosa/symptoms-causes/syc-20353591) is an eating disorder characterized by an abnormally low body weight, an intense fear of gaining weight and a distorted perception of weight. People with anorexia place a high value on controlling their weight and shape, using extreme efforts that tend to significantly interfere with their lives".
+
+and we use genetics data from 1000 Genomes phase 3 release. The outcome (phenotype) data (AN) is simulated.
+
+
+
 
 ## Source materials for practical
 * Source materials for this tutorial can be found in the [Github repository](https://github.com/sinaro/prs-training-uio).
 * all code lines are compatible with bash, unless otherwise stated for R.
 
-## Downloading packages
+## Downloading programs
 * The following two packages are essential for this training: [PRSice2 package (v2.3.5)](http://www.prsice.info/), and [PLINK v.1.90b6.2](https://www.cog-genomics.org/plink/). Optionally, PRSice2 is also able to produce graphs using R. If interested, R version 4.0.0 is recommended. R, or another statistical package might be needed to prepare datasets for training. <br/>
 * This training was tested on Ubuntu 20.04.4 LTS, Red Hat Enterprise Linux Server release 7.9 (Maipo), and Mac OS (Catalina, version 10.15.7).
 * The tutorial assumes that you have root/admin privileges on your device. On an HPC system, this also works but it might differ in some steps.
 
-* Downloading packages:
+* Downloading and preparing packages:
 ```bash
 # Make a directory and download the packages 
 mkdir ~/prstrain
