@@ -99,6 +99,8 @@ awk '!( ($4=="A" && $5=="T") || \
 less AN_basegwas.txt | awk '{print $1}' | sort -n | uniq -c
 ## Here you see you only have SNPs on autosomal chromosomes (ch 1-22).
 ```
+* LDlink interactive tool. Visit https://ldlink.nci.nih.gov/, choose LDpair tool. As an example, choose the first SNP in the base file "rs62513865". Evaluate LD pair with two other variants in the base file "rs16898460" and "rs2507789".
+
 
 ## Download 1000 Genomes genetics dataset and prepare it for analysis
 * We ues publicly available datasets from [1000 Genomes phase 3 release](https://www.internationalgenome.org/data-portal/data-collection/phase-3).<br/>
