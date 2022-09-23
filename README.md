@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2 (September 26th, 2022)
-[Last update: 20.09.2022. This tutorial is in development and is not yet finalized]. <br/>
+[Last update: 23.09.2022. This tutorial is in development and is not yet finalized]. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. It is evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -96,7 +96,7 @@ awk '!( ($4=="A" && $5=="T") || \
 ## Mismatching SNPs: this is taken care of by the program. The program also reports this in a file.
 ## Check the presence of effect and non-effect allele. Here we have REF and ALT allele. If this was not directly mentioned, this should be asked from the GWA authors. Otherwise, the association will be in the opposite direction.
 ## SNPs on sex chromosome. There are models that can use such information but we are working with autosomal SNPs.
-less AN_basegwas.txt | awk '{print $1}' | sort -n | uniq -c
+less AN_basegwas.QC.gz | awk '{print $1}' | sort -n | uniq -c
 ## Here you see you only have SNPs on autosomal chromosomes (ch 1-22).
 ```
 * LDlink interactive tool. Visit https://ldlink.nci.nih.gov/, choose LDpair tool. As an example, choose the first SNP in the base file "rs62513865". Evaluate LD pair with two other variants in the base file "rs16898460" and "rs2507789".
@@ -126,9 +126,9 @@ Have a look at .fam2 file in the repository. Take a look at the populations. Not
 # To get familiar with PCA (a dimensionality reduction method), please follow a video by (StatQuest)[https://www.youtube.com/watch?v=FgakZw6K1QQ)].
 # PC1 and PC2 explain the the first and second highest variance, respectively.
 # We LD-prune the SNPs first with plink
-./plink --bfile 1000G_phase3_common_norel.nodup --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
+./plink --bfile 1000G_phase3_common_norel --indep-pairwise 50 10 0.1 --out pcaprun  #1455110 of 1664850 variants removed.
 # Getting 10 first PCs using the pruned SNP file.
-./plink --bfile 1000G_phase3_common_norel.nodup --extract pcaprun.prune.in --pca 10 --out pcaprun
+./plink --bfile 1000G_phase3_common_norel --extract pcaprun.prune.in --pca 10 --out pcaprun
 # Loading the eigenvec file in R and using ggplot to visualize the population substructure.
 # Note we use .fam2 file to color code points by population ancestry.
 install.packages("dplyr")
@@ -230,10 +230,11 @@ module load plink/1.90b6.2
 * Sample overlap between base and target data: this is not an issue here as we worked with 1000 genome data which was not part of the base data. However, this should be checked. Othwerwise, there will be inflation of the association of PRS with the target data. Practically, overlapping samples should be removed and base GWAS should be re-calculated. <br/>
 * Relatedness: ideally no relatedness of second degree or closer within base, within target, and between base and target. R file for the target has used a King threshold of 0.0884. Therefore, individuals with second degree or closer familiar relationship have been removed. The base data has also mentioned PiHat > 0.2 which has to do with removal of related individuals. <br/>
 * Similar ancestry: base and target data should be from the same ancestry which is the case here (European).
-
+cd ~/prstrainll
 ## Downloading phenotype (AN) data
 * Find the phenotype dataset on Github and download it as a "raw" file in the main prstrain directory:
 ```bash
+
 # Download phenotype file
 wget https://raw.githubusercontent.com/sinaro/prs-training-uio/main/ANpheno_1000G_EUR
 # Take a look at the phenotype file and check if the coding of phenotype file corresponds to that of documentation of plink .fam file.
