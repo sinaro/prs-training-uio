@@ -1,5 +1,5 @@
 # Training for construction of polygenic risk score using PRSice2 (September 26th, 2022)
-[Last update: 23.09.2022. This tutorial is in development and is not yet finalized]. <br/>
+[Last update: 24.09.2022]. <br/>
 In different sources, the terms ‘polygenic score (PGS)’, ‘polygenic risk scores (PRS)’, and ‘genetic risk score (GRS)’ are used interchangeably. All refer to the same score where “[multi-locus profiles of genetic risk](https://pubmed.ncbi.nlm.nih.gov/23701538/), so-called genetic risk scores, can be used to translate discoveries from genome-wide association studies (GWAS) into tools for population health research”. It is evident from the explanation, construction of a PRS is dependent on findings from GWAS.
 
 This [weblink](https://www.genome.gov/Health/Genomics-and-Medicine/Polygenic-risk-scores) gives a very nice overview of PRS for readers who might need an update on their understanding of genetic variations and disease development and how complex diseases are different from single-gene (Mendelian) diseases. 
@@ -280,7 +280,7 @@ Rscript PRSice.R \
         --all-score
 ```
 
-* Check and discuss the output of Prsice2, and the generated files.
+* Check and discuss the output of Prsice2, and the generated files: bar, high-resolution, and quantile plots. prsice, summary, best, snp, and mismatch, files.
 
 ## Running PRSice2 on HPC (eg. TSD at UiO)
 * a brief overview of offline and online HPC system, transferring of data/environment to an offline system, login node and submit node, modules, and Slurm.
